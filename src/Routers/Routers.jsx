@@ -17,9 +17,7 @@ const Routers = () => {
             <Route path="/*" element={ auth.user ? <CustomerRoute /> :<LoginForm/>} />
             <Route path="/manager/jewelry/*" element={<ManagerRoute />} />
             <Route path="/admin/jewelry/*" element={<AdminRoute/>} />
-
         </Routes>
     )
 }
-
 export default Routers

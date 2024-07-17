@@ -54,7 +54,7 @@ const Dashboard = () => {
             const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
             const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
             const areaIds = area.areas?.map(area => area.id) || [];
-            console.log("areId",areaIds)
+            console.log("areId", areaIds);
             dispatch(getDashboardStats(formattedStartDate, formattedEndDate, jwt));
             dispatch(getDashboardStatsByAreas(formattedStartDate, formattedEndDate, areaIds, jwt));
         }
@@ -139,26 +139,30 @@ const Dashboard = () => {
 
             <div>
                 <Typography variant="h4" gutterBottom>Dashboard Stats by Areas</Typography>
-                <Grid container spacing={3}>
-                {Object.keys(dashboard.areas).map((areaId) => (
-                    <Grid item xs={12} md={4} key={areaId}>
-                        <Paper elevation={3} sx={{ p: 2 }}>
-                            <Typography variant="h5" component="h2" gutterBottom>
-                            {dashboard.areas[areaId].areaName}
-                            </Typography>
-                            <Typography variant="body1">
-                                Total Orders: {dashboard.areas[areaId].totalOrders}
-                            </Typography>
-                            <Typography variant="body1">
-                                Total Amount: {dashboard.areas[areaId].totalAmount}
-                            </Typography>
-                            <Typography variant="body1">
-                                Total Sold Items: {dashboard.areas[areaId].totalItems}
-                            </Typography>
-                        </Paper>
+                {area.areas?.length === 0 ? (
+                    <Typography variant="body1">No areas available.</Typography>
+                ) : (
+                    <Grid container spacing={3}>
+                        {area.areas.map((area) => (
+                            <Grid item xs={12} md={4} key={area.id}>
+                                <Paper elevation={3} sx={{ p: 2 }}>
+                                    <Typography variant="h5" component="h2" gutterBottom>
+                                        {dashboard.areas?.[area.id]?.areaName || area.name}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Total Orders: {dashboard.areas?.[area.id]?.totalOrders || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Total Amount: {dashboard.areas?.[area.id]?.totalAmount || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        Total Sold Items: {dashboard.areas?.[area.id]?.totalItems || 'N/A'}
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+                        ))}
                     </Grid>
-                ))}
-                </Grid>
+                )}
             </div>
         </div>
     );
