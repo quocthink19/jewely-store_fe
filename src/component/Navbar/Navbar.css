@@ -1,0 +1,40 @@
+li{
+    list-style: none;
+}
+.navbar-container {
+    padding: 0.8rem 5rem;
+    background: linear-gradient(to right, #efeeee, #ebebe9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+  }
+  
+  .logo-container {
+    cursor: pointer;
+  }
+  
+  .logo {
+    width: 100px;
+    height: 50px;
+  }
+  
+  .navbar-buttons {
+    display: flex;
+    gap: 1rem;
+    width: "100px";
+  }
+  
+  .navbar-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .avatar-container {
+    display: flex;
+    align-items: center;
+    width: 150px; /* Increase avatar size */
+    height: 10px;
+  }
+  
