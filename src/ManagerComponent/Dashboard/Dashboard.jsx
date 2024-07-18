@@ -4,7 +4,7 @@ import { Paper, Typography, Grid, TextField, Button } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { getDashboardStats, getDashboardStatsByAreas } from '../../component/State/DashBoard/Action';
+import { getDashboardBuybackStats, getDashboardBuybackStatsByAreas, getDashboardStats, getDashboardStatsByAreas } from '../../component/State/DashBoard/Action';
 import { getAllAreaAction } from '../../component/State/Area/Action';
 
 const Dashboard = () => {
@@ -56,7 +56,9 @@ const Dashboard = () => {
             const areaIds = area.areas?.map(area => area.id) || [];
             console.log("areId", areaIds);
             dispatch(getDashboardStats(formattedStartDate, formattedEndDate, jwt));
-            dispatch(getDashboardStatsByAreas(formattedStartDate, formattedEndDate, areaIds, jwt));
+            dispatch(getDashboardStatsByAreas(formattedStartDate, formattedEndDate, areaIds, jwt))
+            dispatch(getDashboardBuybackStats(formattedStartDate, formattedEndDate, jwt));
+            dispatch(getDashboardBuybackStatsByAreas(formattedStartDate, formattedEndDate, areaIds, jwt))
         }
     };
 
@@ -102,6 +104,9 @@ const Dashboard = () => {
                 </Grid>
             </Grid>
 
+            <Typography variant="h4">
+            Order
+            </Typography>
             <div>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={4}>
@@ -138,7 +143,7 @@ const Dashboard = () => {
             </div>
 
             <div>
-                <Typography variant="h4" gutterBottom>Dashboard Stats by Areas</Typography>
+                <Typography variant="h6" gutterBottom>Dashboard by Areas</Typography>
                 {area.areas?.length === 0 ? (
                     <Typography variant="body1">No areas available.</Typography>
                 ) : (
@@ -164,6 +169,73 @@ const Dashboard = () => {
                     </Grid>
                 )}
             </div>
+
+            <Typography variant="h4">
+            Buyback
+            </Typography>
+            <div>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Orders
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.buybackAll?.totalBuybacks ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Amount
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.buybackAll?.totalAmount ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Sold Items
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.buybackAll?.totalItems ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </div>
+        
+        <div>
+        <Typography variant="h6" gutterBottom>Dashboard  by Areas</Typography>
+        {area.areas?.length === 0 ? (
+            <Typography variant="body1">No areas available.</Typography>
+        ) : (
+            <Grid container spacing={3}>
+                {area.areas.map((area) => (
+                    <Grid item xs={12} md={4} key={area.id}>
+                        <Paper elevation={3} sx={{ p: 2 }}>
+                            <Typography variant="h5" component="h2" gutterBottom>
+                                {dashboard.buybackAreas?.[area.id]?.areaName || area.name}
+                            </Typography>
+                            <Typography variant="body1">
+                                Total Orders: {dashboard.buybackAreas?.[area.id]?.totalBuybacks || '0'}
+                            </Typography>
+                            <Typography variant="body1">
+                                Total Amount: {dashboard.buybackAreas?.[area.id]?.totalAmount || '0'}
+                            </Typography>
+                            <Typography variant="body1">
+                                Total Sold Items: {dashboard.buybackAreas?.[area.id]?.totalItems || '0'}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
+        )}
+    </div>
+
         </div>
     );
 };

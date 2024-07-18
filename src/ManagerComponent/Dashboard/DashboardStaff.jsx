@@ -4,7 +4,7 @@ import { Paper, Typography, Grid, TextField, Button } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { getDashboardStats, getDashboardStatsByArea } from '../../component/State/DashBoard/Action';
+import { getDashboardBuybackStatsByArea, getDashboardStats, getDashboardStatsByArea } from '../../component/State/DashBoard/Action';
 import { getAllAreaAction, getAreaById, getAreaByUserId } from '../../component/State/Area/Action';
 import { getUser } from '../../component/State/Authentication/Action';
 
@@ -65,7 +65,8 @@ const Dashboard = () => {
         if (!errors.startDate && !errors.endDate && startDate && endDate) {
             const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
             const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
-            dispatch(getDashboardStatsByArea(formattedStartDate, formattedEndDate,area.userArea.id ,jwt));
+            dispatch(getDashboardStatsByArea(formattedStartDate, formattedEndDate,area.userArea.id ,jwt))
+            dispatch(getDashboardBuybackStatsByArea(formattedStartDate, formattedEndDate,area.userArea.id ,jwt));
         }
     };
 
@@ -116,7 +117,9 @@ const Dashboard = () => {
                 {auth.user ? auth.user.areaName : ''}
             </Typography>
             </Grid>
-            
+            <Typography variant="h4">
+                Order
+            </Typography>
             <div>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={4}>
@@ -125,7 +128,7 @@ const Dashboard = () => {
                                 Total Orders
                             </Typography>
                             <Typography variant="h3" component="div">
-                                {loading ? 'Loading...' : dashboard.area?.totalOrders ?? 'N/A'}
+                                {loading ? 'Loading...' : dashboard.buybackArea?.totalBuybacks ?? 'N/A'}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -135,7 +138,7 @@ const Dashboard = () => {
                                 Total Amount
                             </Typography>
                             <Typography variant="h3" component="div">
-                                {loading ? 'Loading...' : dashboard.area?.totalAmount ?? 'N/A'}
+                                {loading ? 'Loading...' : dashboard.buybackArea?.totalAmount ?? 'N/A'}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -145,12 +148,50 @@ const Dashboard = () => {
                                 Total Sold Items
                             </Typography>
                             <Typography variant="h3" component="div">
-                                {loading ? 'Loading...' : dashboard.area?.totalItems ?? 'N/A'}
+                                {loading ? 'Loading...' : dashboard.buybackArea?.totalItems ?? 'N/A'}
                             </Typography>
                         </Paper>
                     </Grid>
                 </Grid>
             </div>
+            <Typography variant="h4">
+            Buyback
+            </Typography>
+            <div>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Orders
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.area?.totalOrders ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Amount
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.area?.totalAmount ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 2 }}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Total Sold Items
+                        </Typography>
+                        <Typography variant="h3" component="div">
+                            {loading ? 'Loading...' : dashboard.area?.totalItems ?? 'N/A'}
+                        </Typography>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </div>
+
         </div>
     );
 };
